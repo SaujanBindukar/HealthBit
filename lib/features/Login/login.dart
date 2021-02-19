@@ -98,7 +98,9 @@ class _LoginState extends State<Login> {
                   ),
                   InkWell(
                     onTap: () {
-                      //go to category.dart page
+                      if (widget.patient) {
+                        ExtendedNavigator.root.push(Routes.patientProfile);
+                      }
                     },
                     child: Container(
                       height: 50,

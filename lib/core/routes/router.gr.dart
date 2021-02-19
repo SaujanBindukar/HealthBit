@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import '../../features/Category/category.dart';
 import '../../features/GetStarted/getStarted.dart';
 import '../../features/Login/login.dart';
+import '../../features/Patient/Medical_History/medicalHistory.dart';
+import '../../features/Patient/Patient_Profile/patientProfile.dart';
 import '../../features/SignUp/signup.dart';
 
 class Routes {
@@ -19,11 +21,15 @@ class Routes {
   static const String category = '/Category';
   static const String login = '/Login';
   static const String signUp = '/sign-up';
+  static const String patientProfile = '/patient-profile';
+  static const String medicalHistory = '/medical-history';
   static const all = <String>{
     GetStarted,
     category,
     login,
     signUp,
+    patientProfile,
+    medicalHistory,
   };
 }
 
@@ -35,6 +41,8 @@ class HealthBitRouter extends RouterBase {
     RouteDef(Routes.category, page: Category),
     RouteDef(Routes.login, page: Login),
     RouteDef(Routes.signUp, page: SignUp),
+    RouteDef(Routes.patientProfile, page: PatientProfile),
+    RouteDef(Routes.medicalHistory, page: MedicalHistory),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -78,6 +86,24 @@ class HealthBitRouter extends RouterBase {
         settings: data,
       );
     },
+    PatientProfile: (data) {
+      final args = data.getArgs<PatientProfileArguments>(
+        orElse: () => PatientProfileArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PatientProfile(key: args.key),
+        settings: data,
+      );
+    },
+    MedicalHistory: (data) {
+      final args = data.getArgs<MedicalHistoryArguments>(
+        orElse: () => MedicalHistoryArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MedicalHistory(key: args.key),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -113,6 +139,22 @@ extension HealthBitRouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.signUp,
         arguments: SignUpArguments(key: key, patient: patient),
       );
+
+  Future<dynamic> pushPatientProfile({
+    Key key,
+  }) =>
+      push<dynamic>(
+        Routes.patientProfile,
+        arguments: PatientProfileArguments(key: key),
+      );
+
+  Future<dynamic> pushMedicalHistory({
+    Key key,
+  }) =>
+      push<dynamic>(
+        Routes.medicalHistory,
+        arguments: MedicalHistoryArguments(key: key),
+      );
 }
 
 /// ************************************************************************
@@ -137,4 +179,16 @@ class SignUpArguments {
   final Key key;
   final bool patient;
   SignUpArguments({this.key, this.patient});
+}
+
+/// PatientProfile arguments holder class
+class PatientProfileArguments {
+  final Key key;
+  PatientProfileArguments({this.key});
+}
+
+/// MedicalHistory arguments holder class
+class MedicalHistoryArguments {
+  final Key key;
+  MedicalHistoryArguments({this.key});
 }

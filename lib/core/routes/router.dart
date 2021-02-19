@@ -2,6 +2,10 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:healthbit/features/Category/category.dart';
 import 'package:healthbit/features/GetStarted/getStarted.dart';
 import 'package:healthbit/features/Login/login.dart';
+
+import 'package:healthbit/features/Patient/Medical_History/medicalHistory.dart';
+
+import 'package:healthbit/features/Patient/Patient_Profile/patientProfile.dart';
 import 'package:healthbit/features/SignUp/signup.dart';
 
 @MaterialRouter(generateNavigationHelperExtension: true, routes: <AutoRoute>[
@@ -19,6 +23,12 @@ import 'package:healthbit/features/SignUp/signup.dart';
   ),
   MaterialRoute(
     page: SignUp,
-  )
+  ),
+  MaterialRoute(
+    page: PatientProfile,
+  ),
+  MaterialRoute(
+    page: MedicalHistory,
+  ),
 ])
 class $HealthBitRouter {}
