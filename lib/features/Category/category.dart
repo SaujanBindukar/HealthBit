@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:healthbit/core/routes/router.gr.dart';
 
 class Category extends StatefulWidget {
   Category({Key key}) : super(key: key);
@@ -70,7 +72,10 @@ class _CategoryState extends State<Category> {
             children: [
               InkWell(
                 onTap: () {
-                  //go to category.dart page
+                  ExtendedNavigator.root.push(Routes.login,
+                      arguments: LoginArguments(
+                        patient: true,
+                      ));
                 },
                 child: Container(
                   height: 50,
@@ -107,7 +112,10 @@ class _CategoryState extends State<Category> {
               ),
               InkWell(
                 onTap: () {
-                  //go to category.dart page
+                  ExtendedNavigator.root.push(Routes.login,
+                      arguments: LoginArguments(
+                        patient: false,
+                      ));
                 },
                 child: Container(
                   height: 50,
