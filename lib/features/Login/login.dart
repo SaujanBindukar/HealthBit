@@ -99,7 +99,8 @@ class _LoginState extends State<Login> {
                   InkWell(
                     onTap: () {
                       if (widget.patient) {
-                        ExtendedNavigator.root.push(Routes.patientProfile);
+                        ExtendedNavigator.root.pushAndRemoveUntil(
+                            Routes.patientProfile, (route) => false);
                       }
                     },
                     child: Container(
