@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "521792819129",
+    "project_id": "healthbit-a3f44",
+    "storage_bucket": "healthbit-a3f44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521792819129:android:3034d3ea0d41d0ba523068",
+        "android_client_info": {
+          "package_name": "com.example.healthbit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521792819129-4d964j7nuv8iqhshdvicg2p7u94kj21p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthbit",
+            "certificate_hash": "d2208f812962087fd6382342c3bc29e4b4daf9b3"
+          }
+        },
+        {
+          "client_id": "521792819129-u33jh8nou352ogfdm2k5jtolvlm8il9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmH-35E641J3bHL2LJKjyngbFM_Dm4t4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521792819129-u33jh8nou352ogfdm2k5jtolvlm8il9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
