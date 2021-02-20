@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import '../../features/Category/category.dart';
 import '../../features/GetStarted/getStarted.dart';
 import '../../features/Login/login.dart';
+import '../../features/Patient/Add_Record/new_record.dart';
 import '../../features/Patient/Medical_History/medicalHistory.dart';
 import '../../features/Patient/Patient_Profile/patientProfile.dart';
 import '../../features/SignUp/signup.dart';
@@ -23,6 +24,7 @@ class Routes {
   static const String signUp = '/sign-up';
   static const String patientProfile = '/patient-profile';
   static const String medicalHistory = '/medical-history';
+  static const String newRecord = '/new-record';
   static const all = <String>{
     GetStarted,
     category,
@@ -30,6 +32,7 @@ class Routes {
     signUp,
     patientProfile,
     medicalHistory,
+    newRecord,
   };
 }
 
@@ -43,6 +46,7 @@ class HealthBitRouter extends RouterBase {
     RouteDef(Routes.signUp, page: SignUp),
     RouteDef(Routes.patientProfile, page: PatientProfile),
     RouteDef(Routes.medicalHistory, page: MedicalHistory),
+    RouteDef(Routes.newRecord, page: NewRecord),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -104,6 +108,12 @@ class HealthBitRouter extends RouterBase {
         settings: data,
       );
     },
+    NewRecord: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NewRecord(),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -155,6 +165,8 @@ extension HealthBitRouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.medicalHistory,
         arguments: MedicalHistoryArguments(key: key),
       );
+
+  Future<dynamic> pushNewRecord() => push<dynamic>(Routes.newRecord);
 }
 
 /// ************************************************************************
