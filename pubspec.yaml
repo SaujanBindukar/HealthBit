@@ -17,15 +17,16 @@ dependencies:
   google_fonts: ^1.1.2
   firebase_auth:
   firebase_core:
+  web3dart: ^1.2.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator:
-  build_runner:
 
   integration_test:
     sdk: flutter
+  auto_route_generator: null
+  build_runner: null
 
 flutter:
   # The following line ensures that the Material Icons font is
@@ -36,7 +37,7 @@ flutter:
   assets:
     - assets/getStart.png
     - assets/profile.png
-
+    - MedicalHistory.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

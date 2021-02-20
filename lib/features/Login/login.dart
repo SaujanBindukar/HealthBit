@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healthbit/core/routes/router.gr.dart';
 
+import '../../core/routes/router.gr.dart';
+
 class Login extends StatefulWidget {
   bool patient;
 
@@ -178,7 +180,13 @@ class _LoginBodyState extends State<LoginBody> {
                   ),
                   widget.patient
                       ? InkWell(
-                          onTap: () async {},
+                          onTap: () async {
+                            ExtendedNavigator.root.pushAndRemoveUntil(
+                              Routes.signUp,
+                              (route) => false,
+                              arguments: SignUpArguments(patient: true),
+                            );
+                          },
                           child: Container(
                             height: 50,
                             width: MediaQuery.of(context).size.width - 40,

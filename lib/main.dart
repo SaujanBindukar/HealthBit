@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: HealthBitRouter(),
         builder: ExtendedNavigator.builder(
           router: HealthBitRouter(),
-          initialRoute: "GetStarted",
+          initialRoute: Routes.GetStarted,
           builder: (context, child) => Theme(
             data: ThemeData(brightness: Brightness.light),
             child: child,
