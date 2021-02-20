@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/Category/category.dart';
@@ -91,7 +92,10 @@ class HealthBitRouter extends RouterBase {
         orElse: () => PatientProfileArguments(),
       );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => PatientProfile(key: args.key),
+        builder: (context) => PatientProfile(
+          key: args.key,
+          userCredential: args.userCredential,
+        ),
         settings: data,
       );
     },
@@ -142,10 +146,12 @@ extension HealthBitRouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushPatientProfile({
     Key key,
+    UserCredential userCredential,
   }) =>
       push<dynamic>(
         Routes.patientProfile,
-        arguments: PatientProfileArguments(key: key),
+        arguments:
+            PatientProfileArguments(key: key, userCredential: userCredential),
       );
 
   Future<dynamic> pushMedicalHistory({
@@ -184,7 +190,8 @@ class SignUpArguments {
 /// PatientProfile arguments holder class
 class PatientProfileArguments {
   final Key key;
-  PatientProfileArguments({this.key});
+  final UserCredential userCredential;
+  PatientProfileArguments({this.key, this.userCredential});
 }
 
 /// MedicalHistory arguments holder class

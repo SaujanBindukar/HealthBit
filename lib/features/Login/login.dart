@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healthbit/core/routes/router.gr.dart';
 
-// ignore: must_be_immutable
 class Login extends StatefulWidget {
   bool patient;
 
@@ -18,7 +18,31 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff5BA2F4),
-      body: SafeArea(
+      body: LoginBody(
+        patient: widget.patient,
+      ),
+    );
+  }
+}
+
+class LoginBody extends StatefulWidget {
+  bool patient;
+
+  LoginBody({Key key, this.patient}) : super(key: key);
+
+  @override
+  _LoginBodyState createState() => _LoginBodyState();
+}
+
+class _LoginBodyState extends State<LoginBody> {
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,13 +91,14 @@ class _LoginState extends State<Login> {
                     height: 50,
                   ),
                   TextFormField(
+                    controller: emailController,
                     style: TextStyle(
                       color: Colors.white,
                     ),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                         focusColor: Colors.white,
-                        labelText: "User ID",
+                        labelText: "Email",
                         labelStyle: GoogleFonts.poppins(
                           color: Colors.white,
                         )),
@@ -82,6 +107,7 @@ class _LoginState extends State<Login> {
                     height: 40,
                   ),
                   TextFormField(
+                    controller: passwordController,
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -97,10 +123,35 @@ class _LoginState extends State<Login> {
                     height: 80,
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (widget.patient) {
-                        ExtendedNavigator.root.pushAndRemoveUntil(
-                            Routes.patientProfile, (route) => false);
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                          print(userCredential);
+                          // ignore: deprecated_member_use
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text("Login Successful.")));
+                          ExtendedNavigator.root.pushAndRemoveUntil(
+                              Routes.patientProfile, (route) => false,
+                              arguments: PatientProfileArguments(
+                                  userCredential: userCredential));
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            // ignore: deprecated_member_use
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("No user found for that email.")));
+                          } else if (e.code == 'wrong-password') {
+                            // ignore: deprecated_member_use
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "Wrong password provided for that user.")));
+                          }
+                        }
                       }
                     },
                     child: Container(
@@ -127,10 +178,7 @@ class _LoginState extends State<Login> {
                   ),
                   widget.patient
                       ? InkWell(
-                          onTap: () {
-                            ExtendedNavigator.root.push(Routes.signUp,
-                                arguments: SignUpArguments(patient: true));
-                          },
+                          onTap: () async {},
                           child: Container(
                             height: 50,
                             width: MediaQuery.of(context).size.width - 40,
@@ -164,44 +212,7 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         )
-                      : InkWell(
-                          onTap: () {
-                            ExtendedNavigator.root.push(Routes.signUp,
-                                arguments: SignUpArguments(patient: false));
-                          },
-                          child: Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width - 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Register a Hospital?  ",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  "Signup",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20,
-                                    color: Color(0xff585950),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
+                      : SizedBox(),
                 ],
               ),
             ),

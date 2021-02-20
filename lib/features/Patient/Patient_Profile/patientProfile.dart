@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healthbit/core/routes/router.gr.dart';
 
 class PatientProfile extends StatefulWidget {
-  PatientProfile({Key key}) : super(key: key);
+  UserCredential userCredential;
+  PatientProfile({Key key, this.userCredential}) : super(key: key);
 
   @override
   _PatientProfileState createState() => _PatientProfileState();
@@ -42,7 +44,7 @@ class _PatientProfileState extends State<PatientProfile> {
                 ),
                 Center(
                   child: Text(
-                    "Kiran Pradhan",
+                    widget.userCredential.user.email,
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       color: Colors.white,
@@ -92,11 +94,13 @@ class _PatientProfileState extends State<PatientProfile> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text(
-                            "ASH12 ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              widget.userCredential.user.uid,
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
@@ -116,53 +120,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           Text(
-                            "krian@gmail.com ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Phone: ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "98168171898 ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Address: ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "pashupati ",
+                            widget.userCredential.user.email,
                             style: GoogleFonts.poppins(
                               fontSize: 15,
                               color: Colors.white,
