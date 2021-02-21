@@ -1,16 +1,12 @@
-# healthbit
+# HealthBit
+The vast majority of hospitals cannot safely share their data with each other, resulting in doctors spending more time writing than helping patients. Health Bit enables clinics and private medical practitioners to safely and easily access patient records, track and monitor patient progress remotely, and exchange information securely with colleagues.
 
-A new Flutter project.
+## Installation
 
-## Getting Started
+Setup Flutter in your system (https://flutter.dev/)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+git clone https://github.com/SaujanBindukar/HealthBit.git
+flutter pub get
+flutter run
+```
