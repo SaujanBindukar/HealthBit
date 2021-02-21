@@ -7,6 +7,7 @@ class NewRecord extends StatefulWidget {
 }
 
 class _NewRecordState extends State<NewRecord> {
+  TextEditingController recordIdController = TextEditingController();
   TextEditingController hospitalNameController = TextEditingController();
   TextEditingController doctorNameController = TextEditingController();
   TextEditingController diagnosisController = TextEditingController();
@@ -17,7 +18,11 @@ class _NewRecordState extends State<NewRecord> {
     return Scaffold(
       backgroundColor: Color(0xff5BA2F4),
       appBar: AppBar(
-        leading: Icon(Icons.chevron_left),
+        leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
         elevation: 0,
         backgroundColor: Color(0xff5BA2F4),
       ),
@@ -27,7 +32,12 @@ class _NewRecordState extends State<NewRecord> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("New Record"),
-            Text("Record Id: "),
+            TextField(
+              controller: recordIdController,
+              decoration: InputDecoration(
+                hintText: "Record Id",
+              ),
+            ),
             TextField(
               controller: hospitalNameController,
               decoration: InputDecoration(
@@ -67,19 +77,26 @@ class _NewRecordState extends State<NewRecord> {
                   bool success = await AppConfig.runTransaction(
                     functionName: "addMedicalRecord",
                     parameter: [
-                      "1",
+                      recordIdController.text,
                       [
-                        "1",
-                        "1",
-                        "Testname",
-                        "DocName",
-                        "Diag",
-                        "PreseName",
+                        recordIdController.text,
+                        recordIdController.text,
+                        hospitalNameController.text,
+                        diagnosisController.text,
+                        prescriptionController.text,
+                        prescriptionController.text,
                         ["google.com"],
                       ],
                     ],
                   );
-                  print(success);
+                  if (success) {
+                    Navigator.pop(context);
+                  } else {
+                    recordIdController.clear();
+                    hospitalNameController.clear();
+                    diagnosisController.clear();
+                    prescriptionController.clear();
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(color: Colors.black54),

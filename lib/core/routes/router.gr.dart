@@ -16,7 +16,10 @@ import '../../features/Login/login.dart';
 import '../../features/Patient/Add_Record/new_record.dart';
 import '../../features/Patient/Medical_History/medicalHistory.dart';
 import '../../features/Patient/Patient_Profile/patientProfile.dart';
+import '../../features/Patient/qr_page/view_qr.dart';
 import '../../features/SignUp/signup.dart';
+import '../../features/hospital/hospital_screen.dart';
+import '../../features/hospital/user_qr_scanner_page.dart';
 
 class Routes {
   static const String GetStarted = 'GetStarted';
@@ -26,6 +29,9 @@ class Routes {
   static const String patientProfile = '/patient-profile';
   static const String medicalHistory = '/medical-history';
   static const String newRecord = '/new-record';
+  static const String viewQR = '/view-qR';
+  static const String hospitalScreen = '/hospital-screen';
+  static const String userQRScannerPage = '/user-qr-scanner-page';
   static const all = <String>{
     GetStarted,
     category,
@@ -34,6 +40,9 @@ class Routes {
     patientProfile,
     medicalHistory,
     newRecord,
+    viewQR,
+    hospitalScreen,
+    userQRScannerPage,
   };
 }
 
@@ -48,6 +57,9 @@ class HealthBitRouter extends RouterBase {
     RouteDef(Routes.patientProfile, page: PatientProfile),
     RouteDef(Routes.medicalHistory, page: MedicalHistory),
     RouteDef(Routes.newRecord, page: NewRecord),
+    RouteDef(Routes.viewQR, page: ViewQR),
+    RouteDef(Routes.hospitalScreen, page: HospitalScreen),
+    RouteDef(Routes.userQRScannerPage, page: UserQRScannerPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -98,7 +110,7 @@ class HealthBitRouter extends RouterBase {
       return MaterialPageRoute<dynamic>(
         builder: (context) => PatientProfile(
           key: args.key,
-          userCredential: args.userCredential,
+          user: args.user,
         ),
         settings: data,
       );
@@ -108,13 +120,40 @@ class HealthBitRouter extends RouterBase {
         orElse: () => MedicalHistoryArguments(),
       );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => MedicalHistory(key: args.key),
+        builder: (context) => MedicalHistory(userId: args.userId),
         settings: data,
       );
     },
     NewRecord: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => NewRecord(),
+        settings: data,
+      );
+    },
+    ViewQR: (data) {
+      final args = data.getArgs<ViewQRArguments>(
+        orElse: () => ViewQRArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ViewQR(user: args.user),
+        settings: data,
+      );
+    },
+    HospitalScreen: (data) {
+      final args = data.getArgs<HospitalScreenArguments>(
+        orElse: () => HospitalScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => HospitalScreen(
+          key: args.key,
+          user: args.user,
+        ),
+        settings: data,
+      );
+    },
+    UserQRScannerPage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const UserQRScannerPage(),
         settings: data,
       );
     },
@@ -156,23 +195,42 @@ extension HealthBitRouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushPatientProfile({
     Key key,
-    UserCredential userCredential,
+    User user,
   }) =>
       push<dynamic>(
         Routes.patientProfile,
-        arguments:
-            PatientProfileArguments(key: key, userCredential: userCredential),
+        arguments: PatientProfileArguments(key: key, user: user),
       );
 
   Future<dynamic> pushMedicalHistory({
-    Key key,
+    String userId,
   }) =>
       push<dynamic>(
         Routes.medicalHistory,
-        arguments: MedicalHistoryArguments(key: key),
+        arguments: MedicalHistoryArguments(userId: userId),
       );
 
   Future<dynamic> pushNewRecord() => push<dynamic>(Routes.newRecord);
+
+  Future<dynamic> pushViewQR({
+    User user,
+  }) =>
+      push<dynamic>(
+        Routes.viewQR,
+        arguments: ViewQRArguments(user: user),
+      );
+
+  Future<dynamic> pushHospitalScreen({
+    Key key,
+    User user,
+  }) =>
+      push<dynamic>(
+        Routes.hospitalScreen,
+        arguments: HospitalScreenArguments(key: key, user: user),
+      );
+
+  Future<dynamic> pushUserQRScannerPage() =>
+      push<dynamic>(Routes.userQRScannerPage);
 }
 
 /// ************************************************************************
@@ -202,12 +260,25 @@ class SignUpArguments {
 /// PatientProfile arguments holder class
 class PatientProfileArguments {
   final Key key;
-  final UserCredential userCredential;
-  PatientProfileArguments({this.key, this.userCredential});
+  final User user;
+  PatientProfileArguments({this.key, this.user});
 }
 
 /// MedicalHistory arguments holder class
 class MedicalHistoryArguments {
+  final String userId;
+  MedicalHistoryArguments({this.userId});
+}
+
+/// ViewQR arguments holder class
+class ViewQRArguments {
+  final User user;
+  ViewQRArguments({this.user});
+}
+
+/// HospitalScreen arguments holder class
+class HospitalScreenArguments {
   final Key key;
-  MedicalHistoryArguments({this.key});
+  final User user;
+  HospitalScreenArguments({this.key, this.user});
 }

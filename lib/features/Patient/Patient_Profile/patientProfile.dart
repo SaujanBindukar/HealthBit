@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:healthbit/core/routes/router.gr.dart';
 
 class PatientProfile extends StatefulWidget {
-  UserCredential userCredential;
-  PatientProfile({Key key, this.userCredential}) : super(key: key);
+  User user;
+  PatientProfile({Key key, this.user}) : super(key: key);
 
   @override
   _PatientProfileState createState() => _PatientProfileState();
@@ -44,7 +44,7 @@ class _PatientProfileState extends State<PatientProfile> {
                 ),
                 Center(
                   child: Text(
-                    widget.userCredential.user.email,
+                    widget.user.email,
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       color: Colors.white,
@@ -52,18 +52,24 @@ class _PatientProfileState extends State<PatientProfile> {
                   ),
                 ),
                 Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color(0xff264653),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Generaete QR",
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.white,
+                  child: InkWell(
+                    onTap: () {
+                      ExtendedNavigator.root.push(Routes.viewQR,
+                          arguments: ViewQRArguments(user: widget.user));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Color(0xff264653),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Generaete QR",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -96,7 +102,7 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           Expanded(
                             child: Text(
-                              widget.userCredential.user.uid,
+                              widget.user.uid,
                               style: GoogleFonts.poppins(
                                 fontSize: 15,
                                 color: Colors.white,
@@ -120,7 +126,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           Text(
-                            widget.userCredential.user.email,
+                            widget.user.email,
                             style: GoogleFonts.poppins(
                               fontSize: 15,
                               color: Colors.white,
@@ -139,7 +145,9 @@ class _PatientProfileState extends State<PatientProfile> {
                 ),
                 InkWell(
                   onTap: () {
-                    ExtendedNavigator.root.push(Routes.medicalHistory);
+                    ExtendedNavigator.root.push(Routes.medicalHistory,
+                        arguments:
+                            MedicalHistoryArguments(userId: widget.user.uid));
                   },
                   child: Container(
                     height: 50,

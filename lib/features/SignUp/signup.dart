@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healthbit/core/components/custom_textfield.dart';
@@ -212,6 +213,10 @@ class _UserSignUpState extends State<UserSignUp> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController citizenshipController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -274,12 +279,28 @@ class _UserSignUpState extends State<UserSignUp> {
                   height: 10,
                 ),
                 CustomTextField(
+                  labelText: "First Name",
+                  controller: firstNameController,
+                ),
+                CustomTextField(
+                  labelText: "Last Name",
+                  controller: lastNameController,
+                ),
+                CustomTextField(
                   labelText: "Email",
                   controller: emailController,
                 ),
                 CustomTextField(
                   labelText: "Password",
                   controller: passwordController,
+                ),
+                CustomTextField(
+                  labelText: "Phone",
+                  controller: phoneController,
+                ),
+                CustomTextField(
+                  labelText: "Citizenship",
+                  controller: citizenshipController,
                 ),
                 SizedBox(
                   height: 40,
@@ -291,7 +312,18 @@ class _UserSignUpState extends State<UserSignUp> {
                           .instance
                           .createUserWithEmailAndPassword(
                               email: emailController.text,
-                              password: passwordController.text);
+                              password: passwordController.text)
+                          .then((sucess) async {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .add({
+                          'firstName': firstNameController.text,
+                          'lastName': lastNameController.text,
+                          "isPatient": true,
+                          "phone": phoneController.text,
+                          "citizenship": citizenshipController.text
+                        });
+                      });
 
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("Register Successful.")));

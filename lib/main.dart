@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healthbit/core/routes/router.gr.dart';
@@ -15,6 +16,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // FirebaseAuth.instance.authStateChanges().listen((User user) {
+    //   if (user == null) {
+    //     ExtendedNavigator.root
+    //         .pushAndRemoveUntil(Routes.GetStarted, (route) => false);
+    //   } else {
+    //     ExtendedNavigator.root.pushAndRemoveUntil(
+    //         Routes.patientProfile, (route) => false,
+    //         arguments: PatientProfileArguments(user: user));
+    //   }
+    // });
     return ScreenUtilSetup(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

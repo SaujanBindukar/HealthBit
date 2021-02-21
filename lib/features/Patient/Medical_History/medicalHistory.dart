@@ -7,7 +7,8 @@ import 'package:healthbit/features/Patient/model/medical_record_response.dart';
 import 'package:web3dart/contracts.dart';
 
 class MedicalHistory extends StatefulWidget {
-  MedicalHistory({Key key}) : super(key: key);
+  String userId;
+  MedicalHistory({this.userId});
 
   @override
   _MedicalHistoryState createState() => _MedicalHistoryState();
@@ -29,7 +30,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
     List<dynamic> result = await AppConfig().ethClient().call(
       contract: deployedContract,
       function: function,
-      params: ["1"],
+      params: [widget.userId],
     );
     for (var i = 0; i < result.first.length; i++) {
       MedicalRecordResponse response =

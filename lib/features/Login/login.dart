@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -126,33 +127,43 @@ class _LoginBodyState extends State<LoginBody> {
                   ),
                   InkWell(
                     onTap: () async {
-                      if (widget.patient) {
-                        try {
-                          UserCredential userCredential = await FirebaseAuth
-                              .instance
-                              .signInWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text);
-                          print(userCredential);
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text);
+                        print(userCredential);
+                        // ignore: deprecated_member_use
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("Login Successful.")));
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(userCredential.user.uid)
+                            .get()
+                            .then((value) {
+                          bool isPatient = value.get("isPatient") == 'true';
+
+                          isPatient
+                              ? ExtendedNavigator.root.pushAndRemoveUntil(
+                                  Routes.patientProfile, (route) => false,
+                                  arguments: PatientProfileArguments(
+                                      user: userCredential.user))
+                              : ExtendedNavigator.root.pushAndRemoveUntil(
+                                  Routes.hospitalScreen, (route) => false,
+                                  arguments: HospitalScreenArguments(
+                                      user: userCredential.user));
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
                           // ignore: deprecated_member_use
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text("Login Successful.")));
-                          ExtendedNavigator.root.pushAndRemoveUntil(
-                              Routes.patientProfile, (route) => false,
-                              arguments: PatientProfileArguments(
-                                  userCredential: userCredential));
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            // ignore: deprecated_member_use
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content:
-                                    Text("No user found for that email.")));
-                          } else if (e.code == 'wrong-password') {
-                            // ignore: deprecated_member_use
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    "Wrong password provided for that user.")));
-                          }
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text("No user found for that email.")));
+                        } else if (e.code == 'wrong-password') {
+                          // ignore: deprecated_member_use
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Wrong password provided for that user.")));
                         }
                       }
                     },
@@ -178,49 +189,47 @@ class _LoginBodyState extends State<LoginBody> {
                   SizedBox(
                     height: 40,
                   ),
-                  widget.patient
-                      ? InkWell(
-                          onTap: () async {
-                            ExtendedNavigator.root.pushAndRemoveUntil(
-                              Routes.signUp,
-                              (route) => false,
-                              arguments: SignUpArguments(patient: true),
-                            );
-                          },
-                          child: Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width - 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Request an Account?  ",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  "Signup",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20,
-                                    color: Color(0xff585950),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                  InkWell(
+                    onTap: () async {
+                      ExtendedNavigator.root.pushAndRemoveUntil(
+                        Routes.signUp,
+                        (route) => false,
+                        arguments: SignUpArguments(patient: widget.patient),
+                      );
+                    },
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width - 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Request an Account?  ",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        )
-                      : SizedBox(),
+                          Text(
+                            "Signup",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              color: Color(0xff585950),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
