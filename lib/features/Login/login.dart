@@ -142,9 +142,9 @@ class _LoginBodyState extends State<LoginBody> {
                             .doc(userCredential.user.uid)
                             .get()
                             .then((value) {
-                          bool isPatient = value.get("isPatient") == 'true';
+                          // bool isPatient = value.get("isPatient") == 'true';
 
-                          isPatient
+                          value.get("isPatient")
                               ? ExtendedNavigator.root.pushAndRemoveUntil(
                                   Routes.patientProfile, (route) => false,
                                   arguments: PatientProfileArguments(

@@ -152,8 +152,11 @@ class HealthBitRouter extends RouterBase {
       );
     },
     UserQRScannerPage: (data) {
+      final args = data.getArgs<UserQRScannerPageArguments>(
+        orElse: () => UserQRScannerPageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const UserQRScannerPage(),
+        builder: (context) => UserQRScannerPage(shouldPop: args.shouldPop),
         settings: data,
       );
     },
@@ -229,8 +232,13 @@ extension HealthBitRouterExtendedNavigatorStateX on ExtendedNavigatorState {
         arguments: HospitalScreenArguments(key: key, user: user),
       );
 
-  Future<dynamic> pushUserQRScannerPage() =>
-      push<dynamic>(Routes.userQRScannerPage);
+  Future<dynamic> pushUserQRScannerPage({
+    bool shouldPop = false,
+  }) =>
+      push<dynamic>(
+        Routes.userQRScannerPage,
+        arguments: UserQRScannerPageArguments(shouldPop: shouldPop),
+      );
 }
 
 /// ************************************************************************
@@ -281,4 +289,10 @@ class HospitalScreenArguments {
   final Key key;
   final User user;
   HospitalScreenArguments({this.key, this.user});
+}
+
+/// UserQRScannerPage arguments holder class
+class UserQRScannerPageArguments {
+  final bool shouldPop;
+  UserQRScannerPageArguments({this.shouldPop = false});
 }

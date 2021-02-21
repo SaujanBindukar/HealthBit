@@ -109,7 +109,9 @@ class _HospitalScreenState extends State<HospitalScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        ExtendedNavigator.root.push(Routes.userQRScannerPage);
+                        ExtendedNavigator.root.push(Routes.userQRScannerPage,
+                            arguments:
+                                UserQRScannerPageArguments(shouldPop: false));
                       },
                       child: Text("Scan QR"),
                     ),

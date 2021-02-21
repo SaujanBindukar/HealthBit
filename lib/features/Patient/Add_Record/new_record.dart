@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:healthbit/core/routes/router.gr.dart';
 import 'package:healthbit/core/utils/app_config.dart';
 
 class NewRecord extends StatefulWidget {
@@ -32,11 +34,26 @@ class _NewRecordState extends State<NewRecord> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("New Record"),
-            TextField(
-              controller: recordIdController,
-              decoration: InputDecoration(
-                hintText: "Record Id",
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: recordIdController,
+                    decoration: InputDecoration(
+                      hintText: "Record Id",
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      final result = ExtendedNavigator.root.push(
+                          Routes.userQRScannerPage,
+                          arguments:
+                              UserQRScannerPageArguments(shouldPop: true));
+                      print(result);
+                    },
+                    child: Text("Scan"))
+              ],
             ),
             TextField(
               controller: hospitalNameController,

@@ -5,9 +5,9 @@ import 'contract_parser.dart';
 
 class AppConfig {
   final String relayWallet =
-      "7adc7e011deca10b72069a3f9821abb7523d83966bf277a9f75383e15004fd31";
-  final String apiUrl = "http://192.168.137.1:7545";
-  final String contractAddress = "0x81B36c4Dd54e31bAA0Ad15Bc33E571d9d22aE6f4";
+      "864996f54c34856f530db7f228293ff74239cfd6804fb2914f828d173d0f0b7a";
+  final String apiUrl = "https://rpc-mumbai.matic.today";
+  final String contractAddress = "0x0DEB2959faca28b410E7dA6e1522fd5dbebcDB94";
 
   static Future<Credentials> get txnCredential async {
     return await AppConfig()

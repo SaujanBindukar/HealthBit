@@ -11,9 +11,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:web3dart/web3dart.dart';
 
 class UserQRScannerPage extends StatefulWidget {
-  const UserQRScannerPage({
-    Key key,
-  }) : super(key: key);
+  bool shouldPop;
+  UserQRScannerPage({this.shouldPop = false});
 
   @override
   _UserQRScannerPageState createState() => _UserQRScannerPageState();
@@ -147,8 +146,10 @@ class _UserQRScannerPageState extends State<UserQRScannerPage> {
   void _onQRViewCreated(QRViewController controller) async {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
-      ExtendedNavigator.root.push(Routes.medicalHistory,
-          arguments: MedicalHistoryArguments(userId: scanData.code));
+      widget.shouldPop
+          ? Navigator.pop(context, scanData.code)
+          : ExtendedNavigator.root.push(Routes.medicalHistory,
+              arguments: MedicalHistoryArguments(userId: scanData.code));
 
       controller.pauseCamera();
     });
